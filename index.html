@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Quadrilateral Family — Ganita Prakash Grade 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#d8d4cc;
+  --text:#1a1814;--text2:#5a5650;--text3:#9a958e;
+  --blue:#2c5f9e;--red:#c0392b;--green:#1a7a4a;--orange:#e08020;
+  --purple:#6d28d9;
+  --font:'DM Sans',-apple-system,sans-serif;--mono:'DM Mono',ui-monospace,monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
+.page{max-width:900px;margin:0 auto;padding:28px 20px}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.title{font-size:22px;font-weight:700;margin-bottom:5px}
+.subtitle{font-size:14px;color:var(--text2);margin-bottom:22px;max-width:560px;line-height:1.5}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+
+/* Venn / family diagram */
+.family-wrap{position:relative;width:100%;height:380px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;cursor:pointer}
+.region{position:absolute;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;transition:all .18s;cursor:pointer;user-select:none}
+.region:hover{filter:brightness(.95)}
+.region.active{filter:brightness(.9);box-shadow:0 0 0 3px rgba(0,0,0,.2)}
+.region-label{font-size:13px;font-weight:700;text-align:center;line-height:1.3;pointer-events:none}
+
+/* Detail panel */
+.detail-panel{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px 20px}
+.dp-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.dp-shape{width:64px;height:64px;flex-shrink:0}
+.dp-name{font-size:20px;font-weight:700;color:var(--text);margin-bottom:2px}
+.dp-parent{font-size:13px;color:var(--text3);font-weight:500}
+.dp-definition{font-size:13.5px;color:var(--text2);line-height:1.6;padding:10px 14px;background:var(--surface2);border-radius:9px;border:1.5px solid var(--border);margin-bottom:12px}
+.props-list{display:flex;flex-direction:column;gap:6px}
+.prop-row{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.prop-source{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:5px;flex-shrink:0}
+.prop-source.own{background:rgba(26,122,74,.12);color:var(--green)}
+.prop-source.inherited{background:rgba(148,163,184,.2);color:var(--text3)}
+
+/* Tip strip */
+.tip-strip{background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;padding:10px 14px;font-size:13px;color:var(--text2);margin-top:10px;text-align:center}
+
+.insight{background:#fff8f0;border:1.5px solid #f0d8c0;border-radius:10px;padding:13px 18px;font-size:13.5px;color:#6b4400;line-height:1.65;margin-top:14px}
+.insight strong{color:#a05000}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="lbl">Chapter 4 · Quadrilaterals</div>
+  <div class="title">Quadrilateral Family Tree</div>
+  <div class="subtitle">Every quadrilateral belongs to a family. Children inherit all properties of their parents, plus gain new ones. Click any shape to see what it is and what it can do.</div>
+
+  <div class="card">
+    <div class="family-wrap" id="familyWrap"></div>
+    <div class="tip-strip">Click any coloured region to learn about that quadrilateral</div>
+  </div>
+
+  <div class="detail-panel" id="detailPanel">
+    <div class="dp-header">
+      <svg class="dp-shape" id="dpShape" viewBox="0 0 64 64"></svg>
+      <div>
+        <div class="dp-name" id="dpName">Click a shape above</div>
+        <div class="dp-parent" id="dpParent"></div>
+      </div>
+    </div>
+    <div class="dp-definition" id="dpDef">Select a quadrilateral from the family diagram to see its definition and properties.</div>
+    <div class="props-list" id="propsList"></div>
+  </div>
+
+  <div class="insight">
+    <strong>Key idea:</strong> A square is the most specialised — it is a rectangle AND a rhombus AND a parallelogram all at once. The Venn diagram shows that squares sit at the intersection of all three. A kite and a trapezium are separate — they don't inherit from each other.
+  </div>
+</div>
+
+<script>
+const SHAPES = {
+  quadrilateral: {
+    name:'Quadrilateral', color:'#9a958e', bg:'rgba(148,163,184,.15)',
+    def:'Any four-sided polygon. The sum of all four angles is always 360°.',
+    parent:null,
+    props:[
+      {src:'own', text:'Four sides and four angles'},
+      {src:'own', text:'Sum of all angles = 360°'},
+    ],
+    svgPath:'M 8,12 L 56,8 L 58,56 L 6,52 Z',
+  },
+  trapezium: {
+    name:'Trapezium', color:'#0891b2', bg:'rgba(8,145,178,.1)',
+    def:'A quadrilateral with at least one pair of parallel opposite sides.',
+    parent:'quadrilateral',
+    props:[
+      {src:'own', text:'At least one pair of parallel sides (PQ ∥ SR)'},
+      {src:'own', text:'Co-interior angles on same side add to 180°'},
+      {src:'inherited', text:'Sum of angles = 360°'},
+    ],
+    svgPath:'M 10,44 L 54,44 L 46,20 L 18,20 Z',
+  },
+  parallelogram: {
+    name:'Parallelogram', color:'#e08020', bg:'rgba(224,128,32,.1)',
+    def:'A quadrilateral in which both pairs of opposite sides are parallel.',
+    parent:'quadrilateral',
+    props:[
+      {src:'own', text:'Both pairs of opposite sides are parallel'},
+      {src:'own', text:'Opposite sides are equal'},
+      {src:'own', text:'Opposite angles are equal'},
+      {src:'own', text:'Adjacent angles add to 180°'},
+      {src:'own', text:'Diagonals bisect each other'},
+      {src:'inherited', text:'Sum of angles = 360°'},
+    ],
+    svgPath:'M 14,44 L 50,44 L 54,20 L 18,20 Z',
+  },
+  kite: {
+    name:'Kite', color:'#6d28d9', bg:'rgba(109,40,217,.1)',
+    def:'A quadrilateral in which two adjacent pairs of sides are equal (AB=BC and CD=DA).',
+    parent:'quadrilateral',
+    props:[
+      {src:'own', text:'AB = BC and CD = DA (adjacent pairs)'},
+      {src:'own', text:'One diagonal bisects the other at 90°'},
+      {src:'own', text:'One diagonal bisects the two vertex angles'},
+      {src:'own', text:'One pair of opposite angles are equal'},
+      {src:'inherited', text:'Sum of angles = 360°'},
+    ],
+    svgPath:'M 32,6 L 54,36 L 32,58 L 10,36 Z',
+  },
+  rectangle: {
+    name:'Rectangle', color:'#2c5f9e', bg:'rgba(44,95,158,.1)',
+    def:'A quadrilateral in which all four angles are 90°.',
+    parent:'parallelogram',
+    props:[
+      {src:'own', text:'All angles = 90°'},
+      {src:'own', text:'Diagonals are equal in length'},
+      {src:'inherited', text:'Opposite sides equal and parallel'},
+      {src:'inherited', text:'Opposite angles equal (both 90°)'},
+      {src:'inherited', text:'Diagonals bisect each other'},
+    ],
+    svgPath:'M 10,18 L 54,18 L 54,46 L 10,46 Z',
+  },
+  rhombus: {
+    name:'Rhombus', color:'#c0392b', bg:'rgba(192,57,43,.1)',
+    def:'A quadrilateral in which all four sides are equal in length.',
+    parent:'parallelogram',
+    props:[
+      {src:'own', text:'All four sides are equal'},
+      {src:'own', text:'Diagonals bisect each other at 90°'},
+      {src:'own', text:'Diagonals bisect the vertex angles'},
+      {src:'inherited', text:'Opposite sides parallel'},
+      {src:'inherited', text:'Opposite angles equal'},
+      {src:'inherited', text:'Adjacent angles add to 180°'},
+    ],
+    svgPath:'M 32,6 L 54,32 L 32,58 L 10,32 Z',
+  },
+  square: {
+    name:'Square', color:'#1a7a4a', bg:'rgba(26,122,74,.1)',
+    def:'A quadrilateral in which all four angles are 90° and all four sides are equal.',
+    parent:'rectangle + rhombus',
+    props:[
+      {src:'own', text:'All four angles = 90° AND all sides equal'},
+      {src:'inherited', text:'All rectangle properties'},
+      {src:'inherited', text:'All rhombus properties'},
+      {src:'own', text:'Diagonals equal, bisect at 90°, bisect vertex angles (45° each)'},
+    ],
+    svgPath:'M 10,10 L 54,10 L 54,54 L 10,54 Z',
+  },
+};
+
+// Draw Venn-like family diagram on SVG canvas
+function buildDiagram(){
+  const wrap=document.getElementById('familyWrap');
+  const W=wrap.clientWidth, H=380;
+
+  // Positions as % of container (x%, y%, w%, h%)
+  const layout=[
+    {id:'quadrilateral', x:5,  y:2,  w:90, h:96},
+    {id:'trapezium',     x:7,  y:8,  w:30, h:56},
+    {id:'parallelogram', x:40, y:8,  w:55, h:82},
+    {id:'kite',          x:7,  y:67, w:30, h:29},
+    {id:'rectangle',     x:42, y:14, w:30, h:52},
+    {id:'rhombus',       x:63, y:14, w:30, h:52},
+    {id:'square',        x:54, y:36, w:20, h:32},
+  ];
+
+  layout.forEach(item=>{
+    const s=SHAPES[item.id];
+    const div=document.createElement('div');
+    div.className='region';
+    div.style.cssText=`
+      left:${item.x}%;top:${item.y}%;
+      width:${item.w}%;height:${item.h}%;
+      background:${s.bg};border-color:${s.color};
+      border-radius:${item.id==='quadrilateral'?'12px':'50%'};
+    `;
+    const lbl=document.createElement('div');
+    lbl.className='region-label';
+    lbl.style.color=s.color;
+    lbl.textContent=s.name;
+    // Position label at top of region
+    lbl.style.cssText=`color:${s.color};font-size:${item.w>40?'14':'11'}px;font-weight:700;position:absolute;top:6px;left:0;right:0;text-align:center;pointer-events:none`;
+    div.appendChild(lbl);
+    div.onclick=(e)=>{e.stopPropagation();selectShape(item.id);};
+    wrap.appendChild(div);
+  });
+}
+
+let selected=null;
+function selectShape(id){
+  selected=id;
+  const s=SHAPES[id];
+  document.getElementById('dpName').textContent=s.name;
+  document.getElementById('dpName').style.color=s.color;
+  document.getElementById('dpParent').textContent=s.parent?`Inherits from: ${s.parent}`:'Root of all quadrilaterals';
+  document.getElementById('dpDef').textContent=s.def;
+
+  // Draw mini shape
+  const svg=document.getElementById('dpShape');
+  svg.innerHTML=`<path d="${s.svgPath}" fill="${s.bg.replace('.1)',',.3)')}" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  // Props
+  const list=document.getElementById('propsList');
+  list.innerHTML='';
+  s.props.forEach(p=>{
+    const row=document.createElement('div');
+    row.className='prop-row';
+    row.innerHTML=`<span class="prop-source ${p.src}">${p.src==='own'?'Own':'Parent'}</span>${p.text}`;
+    list.appendChild(row);
+  });
+}
+
+buildDiagram();
+selectShape('parallelogram');
+</script>
+</body>
+</html>
