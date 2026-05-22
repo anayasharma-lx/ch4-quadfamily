@@ -5,233 +5,417 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Quadrilateral Family — Ganita Prakash Grade 8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#d8d4cc;
-  --text:#1a1814;--text2:#5a5650;--text3:#9a958e;
-  --blue:#2c5f9e;--red:#c0392b;--green:#1a7a4a;--orange:#e08020;
-  --purple:#6d28d9;
-  --font:'DM Sans',-apple-system,sans-serif;--mono:'DM Mono',ui-monospace,monospace;
+  --paper:#faf8f4; --paper2:#f3f0ea; --paper3:#e8e3d8;
+  --ink:#1c1a16;   --ink2:#4a4640;   --ink3:#8a8580;
+  --rule:#d4cfc5;
+  --teal:#1d6a72;  --teal-bg:#e8f4f5;
+  --rust:#b84a2a;  --rust-bg:#fdf0ec;
+  --gold:#c08030;  --gold-bg:#fdf5e8;
+  --sage:#3a6a48;  --sage-bg:#eaf2ec;
+  --violet:#6a4a90;--violet-bg:#f2eef8;
+  --blue:#2a5a8a;  --blue-bg:#e8f0f8;
+  --font:'DM Sans',sans-serif;
+  --serif:'Lora',Georgia,serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+  --shadow:0 2px 12px rgba(28,26,22,.08);
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
-.page{max-width:900px;margin:0 auto;padding:28px 20px}
-.lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
-.title{font-size:22px;font-weight:700;margin-bottom:5px}
-.subtitle{font-size:14px;color:var(--text2);margin-bottom:22px;max-width:560px;line-height:1.5}
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;padding:28px 20px 60px;line-height:1.6;background-image:radial-gradient(circle at 20% 30%,rgba(192,128,48,.04) 0,transparent 50%),radial-gradient(circle at 80% 70%,rgba(29,106,114,.04) 0,transparent 50%)}
+.app{max-width:900px;margin:0 auto}
 
-/* Venn / family diagram */
-.family-wrap{position:relative;width:100%;height:380px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;cursor:pointer}
-.region{position:absolute;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;transition:all .18s;cursor:pointer;user-select:none}
-.region:hover{filter:brightness(.95)}
-.region.active{filter:brightness(.9);box-shadow:0 0 0 3px rgba(0,0,0,.2)}
-.region-label{font-size:13px;font-weight:700;text-align:center;line-height:1.3;pointer-events:none}
+.header{margin-bottom:24px;padding-bottom:18px;border-bottom:1.5px solid var(--rule)}
+.chapter-badge{display:inline-flex;align-items:center;gap:8px;background:var(--paper2);border:1.5px solid var(--rule);border-radius:20px;padding:4px 14px 4px 10px;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.badge-num{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;font-family:var(--mono);display:flex;align-items:center;justify-content:center}
+h1{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-.3px;line-height:1.2;margin-bottom:5px}
+.header-sub{font-size:14px;color:var(--ink2);max-width:560px;line-height:1.55}
+
+.card{background:var(--paper);border:1.5px solid var(--rule);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
+.concept{background:var(--gold-bg);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 16px;margin-bottom:20px;font-family:var(--serif);font-style:italic;font-size:14px;color:#4a3010;line-height:1.65}
+.concept strong{font-style:normal;font-weight:700;color:#3a2008}
+
+/* Venn canvas */
+.venn-wrap{background:var(--paper2);border:1.5px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:14px;position:relative;cursor:pointer}
+#venn{display:block;width:100%}
+.venn-hint{position:absolute;bottom:8px;right:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);background:rgba(250,248,244,.88);padding:3px 10px;border-radius:20px;border:1px solid var(--rule);pointer-events:none}
 
 /* Detail panel */
-.detail-panel{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px 20px}
-.dp-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.dp-shape{width:64px;height:64px;flex-shrink:0}
-.dp-name{font-size:20px;font-weight:700;color:var(--text);margin-bottom:2px}
-.dp-parent{font-size:13px;color:var(--text3);font-weight:500}
-.dp-definition{font-size:13.5px;color:var(--text2);line-height:1.6;padding:10px 14px;background:var(--surface2);border-radius:9px;border:1.5px solid var(--border);margin-bottom:12px}
-.props-list{display:flex;flex-direction:column;gap:6px}
-.prop-row{display:flex;align-items:center;gap:8px;font-size:13.5px}
-.prop-source{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:5px;flex-shrink:0}
-.prop-source.own{background:rgba(26,122,74,.12);color:var(--green)}
-.prop-source.inherited{background:rgba(148,163,184,.2);color:var(--text3)}
+.detail-panel{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+@media(max-width:540px){.detail-panel{grid-template-columns:1fr}}
 
-/* Tip strip */
-.tip-strip{background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;padding:10px 14px;font-size:13px;color:var(--text2);margin-top:10px;text-align:center}
+.shape-preview{width:90px;height:90px;background:#fff;border:1.5px solid var(--rule);border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.shape-preview svg{width:72px;height:72px}
 
-.insight{background:#fff8f0;border:1.5px solid #f0d8c0;border-radius:10px;padding:13px 18px;font-size:13.5px;color:#6b4400;line-height:1.65;margin-top:14px}
-.insight strong{color:#a05000}
+.detail-right{min-width:0}
+.dp-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.dp-parent{font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:8px}
+.dp-def{font-size:13.5px;color:var(--ink2);line-height:1.6;padding:10px 13px;background:var(--paper2);border-radius:8px;border:1.5px solid var(--rule);margin-bottom:10px}
+
+.props-list{display:flex;flex-direction:column;gap:5px}
+.prop-row{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink2);line-height:1.4}
+.prop-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:5px;flex-shrink:0;margin-top:1px}
+.pb-own{background:var(--sage-bg);color:var(--sage);border:1px solid #8abcaa}
+.pb-inh{background:var(--paper3);color:var(--ink3);border:1px solid var(--rule)}
+
+/* Insight */
+.insight{background:var(--gold-bg);border:1px solid #e0c080;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 15px;font-size:13px;color:#6b4400;line-height:1.65;margin-top:4px}
+.insight strong{color:#4a2e00}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="lbl">Chapter 4 · Quadrilaterals</div>
-  <div class="title">Quadrilateral Family Tree</div>
-  <div class="subtitle">Every quadrilateral belongs to a family. Children inherit all properties of their parents, plus gain new ones. Click any shape to see what it is and what it can do.</div>
-
-  <div class="card">
-    <div class="family-wrap" id="familyWrap"></div>
-    <div class="tip-strip">Click any coloured region to learn about that quadrilateral</div>
+<div class="app">
+  <div class="header">
+    <div class="chapter-badge"><div class="badge-num">4</div>Chapter 4 · Quadrilaterals</div>
+    <h1>Quadrilateral Family Tree</h1>
+    <p class="header-sub">Every quadrilateral belongs to a family. Children inherit all properties of their parents and gain new ones. Click any region to explore.</p>
   </div>
 
-  <div class="detail-panel" id="detailPanel">
-    <div class="dp-header">
-      <svg class="dp-shape" id="dpShape" viewBox="0 0 64 64"></svg>
-      <div>
-        <div class="dp-name" id="dpName">Click a shape above</div>
-        <div class="dp-parent" id="dpParent"></div>
+  <div class="card">
+    <div class="concept">
+      <strong>Reading the diagram:</strong> regions nested inside other regions are special cases. A square sits inside both Rectangle and Rhombus — it has every property of both. Kite and Trapezium are separate branches that don't inherit from each other.
+    </div>
+
+    <div class="venn-wrap">
+      <canvas id="venn" height="380"></canvas>
+      <div class="venn-hint">Click any region</div>
+    </div>
+
+    <!-- Detail panel -->
+    <div class="detail-panel">
+      <div class="shape-preview">
+        <svg id="dp-svg" viewBox="0 0 72 72" fill="none"></svg>
+      </div>
+      <div class="detail-right">
+        <div class="dp-name" id="dp-name">Parallelogram</div>
+        <div class="dp-parent" id="dp-parent"></div>
+        <div class="dp-def" id="dp-def"></div>
+        <div class="props-list" id="dp-props"></div>
       </div>
     </div>
-    <div class="dp-definition" id="dpDef">Select a quadrilateral from the family diagram to see its definition and properties.</div>
-    <div class="props-list" id="propsList"></div>
   </div>
 
   <div class="insight">
-    <strong>Key idea:</strong> A square is the most specialised — it is a rectangle AND a rhombus AND a parallelogram all at once. The Venn diagram shows that squares sit at the intersection of all three. A kite and a trapezium are separate — they don't inherit from each other.
+    <strong>The hierarchy:</strong> Quadrilateral → Parallelogram → Rectangle → Square, and separately Parallelogram → Rhombus → Square. The square inherits from both Rectangle and Rhombus. Kite and Trapezium are direct children of Quadrilateral with no further subtypes shown here.
   </div>
 </div>
 
 <script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
 const SHAPES = {
-  quadrilateral: {
-    name:'Quadrilateral', color:'#9a958e', bg:'rgba(148,163,184,.15)',
-    def:'Any four-sided polygon. The sum of all four angles is always 360°.',
-    parent:null,
-    props:[
-      {src:'own', text:'Four sides and four angles'},
-      {src:'own', text:'Sum of all angles = 360°'},
+  quad: {
+    name: 'Quadrilateral',
+    parent: null,
+    color: '#6a6258',
+    def: 'Any closed figure with exactly four straight sides and four angles.',
+    props: [
+      {own: true,  text: 'Four sides and four vertices'},
+      {own: true,  text: 'Sum of interior angles = 360°'},
     ],
-    svgPath:'M 8,12 L 56,8 L 58,56 L 6,52 Z',
+    svg: 'M 10,14 L 62,10 L 64,62 L 8,58 Z',
   },
-  trapezium: {
-    name:'Trapezium', color:'#0891b2', bg:'rgba(8,145,178,.1)',
-    def:'A quadrilateral with at least one pair of parallel opposite sides.',
-    parent:'quadrilateral',
-    props:[
-      {src:'own', text:'At least one pair of parallel sides (PQ ∥ SR)'},
-      {src:'own', text:'Co-interior angles on same side add to 180°'},
-      {src:'inherited', text:'Sum of angles = 360°'},
+  trap: {
+    name: 'Trapezium',
+    parent: 'Quadrilateral',
+    color: '#1d6a72',
+    def: 'A quadrilateral with at least one pair of parallel opposite sides.',
+    props: [
+      {own: true,  text: 'At least one pair of parallel sides'},
+      {own: true,  text: 'Co-interior angles on the same side sum to 180°'},
+      {own: false, text: 'Sum of angles = 360°'},
     ],
-    svgPath:'M 10,44 L 54,44 L 46,20 L 18,20 Z',
+    svg: 'M 8,52 L 64,52 L 52,20 L 20,20 Z',
   },
-  parallelogram: {
-    name:'Parallelogram', color:'#e08020', bg:'rgba(224,128,32,.1)',
-    def:'A quadrilateral in which both pairs of opposite sides are parallel.',
-    parent:'quadrilateral',
-    props:[
-      {src:'own', text:'Both pairs of opposite sides are parallel'},
-      {src:'own', text:'Opposite sides are equal'},
-      {src:'own', text:'Opposite angles are equal'},
-      {src:'own', text:'Adjacent angles add to 180°'},
-      {src:'own', text:'Diagonals bisect each other'},
-      {src:'inherited', text:'Sum of angles = 360°'},
+  para: {
+    name: 'Parallelogram',
+    parent: 'Quadrilateral',
+    color: '#c08030',
+    def: 'A quadrilateral where both pairs of opposite sides are parallel.',
+    props: [
+      {own: true,  text: 'Both pairs of opposite sides are parallel'},
+      {own: true,  text: 'Opposite sides are equal in length'},
+      {own: true,  text: 'Opposite angles are equal'},
+      {own: true,  text: 'Adjacent angles are supplementary (add to 180°)'},
+      {own: true,  text: 'Diagonals bisect each other'},
+      {own: false, text: 'Sum of angles = 360°'},
     ],
-    svgPath:'M 14,44 L 50,44 L 54,20 L 18,20 Z',
+    svg: 'M 14,52 L 58,52 L 62,20 L 18,20 Z',
   },
   kite: {
-    name:'Kite', color:'#6d28d9', bg:'rgba(109,40,217,.1)',
-    def:'A quadrilateral in which two adjacent pairs of sides are equal (AB=BC and CD=DA).',
-    parent:'quadrilateral',
-    props:[
-      {src:'own', text:'AB = BC and CD = DA (adjacent pairs)'},
-      {src:'own', text:'One diagonal bisects the other at 90°'},
-      {src:'own', text:'One diagonal bisects the two vertex angles'},
-      {src:'own', text:'One pair of opposite angles are equal'},
-      {src:'inherited', text:'Sum of angles = 360°'},
+    name: 'Kite',
+    parent: 'Quadrilateral',
+    color: '#6a4a90',
+    def: 'A quadrilateral with two distinct pairs of consecutive sides that are equal.',
+    props: [
+      {own: true,  text: 'Two pairs of adjacent sides equal: AB=AD, CB=CD'},
+      {own: true,  text: 'One diagonal bisects the other at 90°'},
+      {own: true,  text: 'One diagonal is a line of symmetry'},
+      {own: true,  text: 'One pair of opposite angles equal (B = D)'},
+      {own: false, text: 'Sum of angles = 360°'},
     ],
-    svgPath:'M 32,6 L 54,36 L 32,58 L 10,36 Z',
+    svg: 'M 36,5 L 62,38 L 36,67 L 10,38 Z',
   },
-  rectangle: {
-    name:'Rectangle', color:'#2c5f9e', bg:'rgba(44,95,158,.1)',
-    def:'A quadrilateral in which all four angles are 90°.',
-    parent:'parallelogram',
-    props:[
-      {src:'own', text:'All angles = 90°'},
-      {src:'own', text:'Diagonals are equal in length'},
-      {src:'inherited', text:'Opposite sides equal and parallel'},
-      {src:'inherited', text:'Opposite angles equal (both 90°)'},
-      {src:'inherited', text:'Diagonals bisect each other'},
+  rect: {
+    name: 'Rectangle',
+    parent: 'Parallelogram',
+    color: '#2a5a8a',
+    def: 'A parallelogram where all four interior angles are right angles (90°).',
+    props: [
+      {own: true,  text: 'All four angles = 90°'},
+      {own: true,  text: 'Diagonals are equal in length'},
+      {own: false, text: 'Opposite sides equal and parallel'},
+      {own: false, text: 'Diagonals bisect each other'},
+      {own: false, text: 'Adjacent angles supplementary'},
     ],
-    svgPath:'M 10,18 L 54,18 L 54,46 L 10,46 Z',
+    svg: 'M 6,20 L 66,20 L 66,52 L 6,52 Z',
   },
-  rhombus: {
-    name:'Rhombus', color:'#c0392b', bg:'rgba(192,57,43,.1)',
-    def:'A quadrilateral in which all four sides are equal in length.',
-    parent:'parallelogram',
-    props:[
-      {src:'own', text:'All four sides are equal'},
-      {src:'own', text:'Diagonals bisect each other at 90°'},
-      {src:'own', text:'Diagonals bisect the vertex angles'},
-      {src:'inherited', text:'Opposite sides parallel'},
-      {src:'inherited', text:'Opposite angles equal'},
-      {src:'inherited', text:'Adjacent angles add to 180°'},
+  rhom: {
+    name: 'Rhombus',
+    parent: 'Parallelogram',
+    color: '#b84a2a',
+    def: 'A parallelogram where all four sides are equal in length.',
+    props: [
+      {own: true,  text: 'All four sides equal'},
+      {own: true,  text: 'Diagonals bisect each other at 90°'},
+      {own: true,  text: 'Diagonals bisect the vertex angles'},
+      {own: false, text: 'Opposite sides parallel'},
+      {own: false, text: 'Opposite angles equal'},
+      {own: false, text: 'Adjacent angles supplementary'},
     ],
-    svgPath:'M 32,6 L 54,32 L 32,58 L 10,32 Z',
+    svg: 'M 36,5 L 64,36 L 36,67 L 8,36 Z',
   },
-  square: {
-    name:'Square', color:'#1a7a4a', bg:'rgba(26,122,74,.1)',
-    def:'A quadrilateral in which all four angles are 90° and all four sides are equal.',
-    parent:'rectangle + rhombus',
-    props:[
-      {src:'own', text:'All four angles = 90° AND all sides equal'},
-      {src:'inherited', text:'All rectangle properties'},
-      {src:'inherited', text:'All rhombus properties'},
-      {src:'own', text:'Diagonals equal, bisect at 90°, bisect vertex angles (45° each)'},
+  sq: {
+    name: 'Square',
+    parent: 'Rectangle + Rhombus',
+    color: '#3a6a48',
+    def: 'A quadrilateral where all four sides are equal AND all four angles are 90°. It is both a rectangle and a rhombus.',
+    props: [
+      {own: true,  text: 'All sides equal AND all angles = 90°'},
+      {own: true,  text: 'Diagonals equal, bisect at 90°, bisect vertex angles (45° each)'},
+      {own: false, text: 'All rectangle properties'},
+      {own: false, text: 'All rhombus properties'},
     ],
-    svgPath:'M 10,10 L 54,10 L 54,54 L 10,54 Z',
+    svg: 'M 10,10 L 62,10 L 62,62 L 10,62 Z',
   },
 };
 
-// Draw Venn-like family diagram on SVG canvas
-function buildDiagram(){
-  const wrap=document.getElementById('familyWrap');
-  const W=wrap.clientWidth, H=380;
+// ══════════════════════════════════════════════
+// VENN REGIONS  (canvas coordinate fractions)
+// Each region: ellipse defined by cx,cy,rx,ry (fractions of W,H)
+// plus hit areas for click detection
+// ══════════════════════════════════════════════
 
-  // Positions as % of container (x%, y%, w%, h%)
-  const layout=[
-    {id:'quadrilateral', x:5,  y:2,  w:90, h:96},
-    {id:'trapezium',     x:7,  y:8,  w:30, h:56},
-    {id:'parallelogram', x:40, y:8,  w:55, h:82},
-    {id:'kite',          x:7,  y:67, w:30, h:29},
-    {id:'rectangle',     x:42, y:14, w:30, h:52},
-    {id:'rhombus',       x:63, y:14, w:30, h:52},
-    {id:'square',        x:54, y:36, w:20, h:32},
-  ];
+// We'll draw using actual pixel positions computed at draw time.
+// Layout strategy:
+//   Big outer rect = Quadrilateral
+//   Left ellipse   = Trapezium  (top-left inside quad)
+//   Right ellipse  = Kite       (bottom-left inside quad, separate)
+//   Center ellipse = Parallelogram (right half of quad)
+//     Inside para: left=Rectangle, right=Rhombus
+//     Intersection of rect+rhom = Square
 
-  layout.forEach(item=>{
-    const s=SHAPES[item.id];
-    const div=document.createElement('div');
-    div.className='region';
-    div.style.cssText=`
-      left:${item.x}%;top:${item.y}%;
-      width:${item.w}%;height:${item.h}%;
-      background:${s.bg};border-color:${s.color};
-      border-radius:${item.id==='quadrilateral'?'12px':'50%'};
-    `;
-    const lbl=document.createElement('div');
-    lbl.className='region-label';
-    lbl.style.color=s.color;
-    lbl.textContent=s.name;
-    // Position label at top of region
-    lbl.style.cssText=`color:${s.color};font-size:${item.w>40?'14':'11'}px;font-weight:700;position:absolute;top:6px;left:0;right:0;text-align:center;pointer-events:none`;
-    div.appendChild(lbl);
-    div.onclick=(e)=>{e.stopPropagation();selectShape(item.id);};
-    wrap.appendChild(div);
-  });
+let selected = 'para';
+let W = 0, H = 0;
+const PR = Math.min(window.devicePixelRatio||1, 2);
+
+// Region layout as fractions [cx, cy, rx, ry] of canvas W/H
+// (computed each draw to stay responsive)
+function getRegions(W, H){
+  const PAD = 12;
+  return {
+    quad: { type:'rect', x:PAD, y:PAD, w:W-PAD*2, h:H-PAD*2 },
+    trap: { type:'ellipse', cx:.22, cy:.28, rx:.16, ry:.18 },
+    kite: { type:'ellipse', cx:.22, cy:.72, rx:.16, ry:.16 },
+    para: { type:'ellipse', cx:.63, cy:.50, rx:.30, ry:.40 },
+    rect: { type:'ellipse', cx:.52, cy:.46, rx:.17, ry:.27 },
+    rhom: { type:'ellipse', cx:.73, cy:.46, rx:.17, ry:.27 },
+    sq:   { type:'ellipse', cx:.625, cy:.46, rx:.085, ry:.18 },
+  };
 }
 
-let selected=null;
-function selectShape(id){
-  selected=id;
-  const s=SHAPES[id];
-  document.getElementById('dpName').textContent=s.name;
-  document.getElementById('dpName').style.color=s.color;
-  document.getElementById('dpParent').textContent=s.parent?`Inherits from: ${s.parent}`:'Root of all quadrilaterals';
-  document.getElementById('dpDef').textContent=s.def;
+function px(frac, dim){ return frac * dim; }
 
-  // Draw mini shape
-  const svg=document.getElementById('dpShape');
-  svg.innerHTML=`<path d="${s.svgPath}" fill="${s.bg.replace('.1)',',.3)')}" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round"/>`;
+function drawVenn(){
+  const canvas = document.getElementById('venn');
+  W = canvas.parentElement.clientWidth;
+  H = 380;
+  canvas.style.width  = W+'px';
+  canvas.style.height = H+'px';
+  canvas.width  = W * PR;
+  canvas.height = H * PR;
+  const ctx = canvas.getContext('2d');
+  ctx.resetTransform();
+  ctx.scale(PR, PR);
+
+  ctx.fillStyle = '#f3f0ea';
+  ctx.fillRect(0,0,W,H);
+
+  const PAD = 14;
+  const sel = selected;
+
+  // Helper: draw ellipse fill + stroke
+  function ell(cx,cy,rx,ry,fill,stroke,lineW,dash){
+    ctx.beginPath();
+    ctx.ellipse(W*cx, H*cy, W*rx, H*ry, 0, 0, Math.PI*2);
+    if(fill)  { ctx.fillStyle=fill;  ctx.fill(); }
+    if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=lineW||1.5; ctx.setLineDash(dash||[]); ctx.stroke(); ctx.setLineDash([]); }
+  }
+  function ellPath(cx,cy,rx,ry){
+    ctx.beginPath();
+    ctx.ellipse(W*cx, H*cy, W*rx, H*ry, 0, 0, Math.PI*2);
+  }
+
+  const alpha = id => sel===id ? '30' : '14';
+  const strokeW = id => sel===id ? 2.5 : 1.5;
+
+  // ── 1. Quadrilateral (outer rounded rect) ──
+  ctx.beginPath();
+  ctx.roundRect(PAD, PAD, W-PAD*2, H-PAD*2, 12);
+  ctx.fillStyle = SHAPES.quad.color + (sel==='quad'?'22':'0e');
+  ctx.fill();
+  ctx.strokeStyle = SHAPES.quad.color + (sel==='quad'?'ff':'88');
+  ctx.lineWidth = sel==='quad'?2.5:1.5;
+  ctx.stroke();
+  // Label
+  ctx.font = `${sel==='quad'?'bold ':''}12px DM Sans,sans-serif`;
+  ctx.fillStyle = SHAPES.quad.color;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  ctx.fillText('Quadrilateral', PAD+10, PAD+8);
+
+  // ── 2. Trapezium (top-left ellipse) ──
+  ell(.20,.28,.155,.17, SHAPES.trap.color+alpha('trap'), SHAPES.trap.color, strokeW('trap'));
+  ctx.font=`${sel==='trap'?'bold ':''}11px DM Sans`;
+  ctx.fillStyle=SHAPES.trap.color; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('Trapezium', W*.20, H*.20);
+
+  // ── 3. Kite (bottom-left ellipse) ──
+  ell(.20,.72,.155,.17, SHAPES.kite.color+alpha('kite'), SHAPES.kite.color, strokeW('kite'));
+  ctx.font=`${sel==='kite'?'bold ':''}11px DM Sans`;
+  ctx.fillStyle=SHAPES.kite.color; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('Kite', W*.20, H*.66);
+
+  // ── 4. Parallelogram (right big ellipse) ──
+  ell(.63,.50,.285,.39, SHAPES.para.color+alpha('para'), SHAPES.para.color, strokeW('para'));
+  ctx.font=`${sel==='para'?'bold ':''}12px DM Sans`;
+  ctx.fillStyle=SHAPES.para.color; ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('Parallelogram', W*.63, H*.12);
+
+  // ── 5. Rectangle (left sub-ellipse inside para) ──
+  ell(.52,.46,.165,.26, SHAPES.rect.color+alpha('rect'), SHAPES.rect.color, strokeW('rect'));
+  ctx.font=`${sel==='rect'?'bold ':''}10px DM Sans`;
+  ctx.fillStyle=SHAPES.rect.color; ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('Rectangle', W*.52, H*.20);
+
+  // ── 6. Rhombus (right sub-ellipse inside para) ──
+  ell(.745,.46,.165,.26, SHAPES.rhom.color+alpha('rhom'), SHAPES.rhom.color, strokeW('rhom'));
+  ctx.font=`${sel==='rhom'?'bold ':''}10px DM Sans`;
+  ctx.fillStyle=SHAPES.rhom.color; ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('Rhombus', W*.745, H*.20);
+
+  // ── 7. Square (intersection of rect+rhom) ──
+  ell(.632,.50,.10,.18, SHAPES.sq.color+alpha('sq'), SHAPES.sq.color, strokeW('sq'));
+  ctx.font=`${sel==='sq'?'bold ':''}9.5px DM Sans`;
+  ctx.fillStyle=SHAPES.sq.color; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('Square', W*.632, H*.50);
+
+  // ── Selection highlight ring ──
+  const rings = {
+    quad: ()=>{ ctx.beginPath(); ctx.roundRect(PAD-2,PAD-2,W-PAD*2+4,H-PAD*2+4,14); },
+    trap: ()=>ell(.20,.28,.162,.177,null,null),
+    kite: ()=>ell(.20,.72,.162,.177,null,null),
+    para: ()=>ell(.63,.50,.293,.397,null,null),
+    rect: ()=>ell(.52,.46,.173,.267,null,null),
+    rhom: ()=>ell(.745,.46,.173,.267,null,null),
+    sq:   ()=>ell(.632,.50,.108,.187,null,null),
+  };
+  if(sel && rings[sel]){
+    rings[sel]();
+    ctx.strokeStyle = SHAPES[sel].color;
+    ctx.lineWidth   = 3;
+    ctx.setLineDash([]);
+    ctx.stroke();
+  }
+
+  // ── Build hit areas ──
+  buildHitAreas();
+}
+
+// ══════════════════════════════════════════════
+// HIT DETECTION
+// ══════════════════════════════════════════════
+// Test in reverse order (most nested first)
+function inEllipse(mx,my,cxF,cyF,rxF,ryF){
+  const dx=(mx-W*cxF)/(W*rxF), dy=(my-H*cyF)/(H*ryF);
+  return dx*dx+dy*dy <= 1;
+}
+
+let hitAreas = [];
+function buildHitAreas(){
+  hitAreas = [
+    { id:'sq',   test:(x,y)=>inEllipse(x,y,.632,.50,.10,.18) },
+    { id:'rect', test:(x,y)=>inEllipse(x,y,.52,.46,.165,.26) },
+    { id:'rhom', test:(x,y)=>inEllipse(x,y,.745,.46,.165,.26) },
+    { id:'para', test:(x,y)=>inEllipse(x,y,.63,.50,.285,.39) },
+    { id:'trap', test:(x,y)=>inEllipse(x,y,.20,.28,.155,.17) },
+    { id:'kite', test:(x,y)=>inEllipse(x,y,.20,.72,.155,.17) },
+    { id:'quad', test:()=>true },  // fallback
+  ];
+}
+
+document.getElementById('venn').addEventListener('click', e=>{
+  const rect = document.getElementById('venn').getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  for(const h of hitAreas){
+    if(h.test(mx,my)){
+      selected = h.id;
+      drawVenn();
+      updatePanel(h.id);
+      return;
+    }
+  }
+});
+
+// ══════════════════════════════════════════════
+// DETAIL PANEL
+// ══════════════════════════════════════════════
+function updatePanel(id){
+  const s = SHAPES[id];
+  const col = s.color;
+
+  document.getElementById('dp-name').textContent = s.name;
+  document.getElementById('dp-name').style.color = col;
+  document.getElementById('dp-parent').textContent =
+    s.parent ? 'Inherits from: ' + s.parent : 'Root of all quadrilaterals';
+
+  document.getElementById('dp-def').textContent = s.def;
+
+  // Mini shape SVG
+  const svg = document.getElementById('dp-svg');
+  svg.innerHTML = `
+    <path d="${s.svg}" fill="${col}22" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>
+  `;
 
   // Props
-  const list=document.getElementById('propsList');
-  list.innerHTML='';
+  const list = document.getElementById('dp-props');
+  list.innerHTML = '';
   s.props.forEach(p=>{
-    const row=document.createElement('div');
-    row.className='prop-row';
-    row.innerHTML=`<span class="prop-source ${p.src}">${p.src==='own'?'Own':'Parent'}</span>${p.text}`;
+    const row = document.createElement('div');
+    row.className = 'prop-row';
+    row.innerHTML = `<span class="prop-badge ${p.own?'pb-own':'pb-inh'}">${p.own?'Own':'Parent'}</span>${p.text}`;
     list.appendChild(row);
   });
 }
 
-buildDiagram();
-selectShape('parallelogram');
+// ══════════════════════════════════════════════
+// RESIZE + INIT
+// ══════════════════════════════════════════════
+new ResizeObserver(drawVenn).observe(document.getElementById('venn').parentElement);
+drawVenn();
+updatePanel('para');
 </script>
 </body>
 </html>
