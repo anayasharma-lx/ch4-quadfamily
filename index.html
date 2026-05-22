@@ -253,93 +253,112 @@ function drawVenn(){
   ctx.fillStyle = '#f3f0ea';
   ctx.fillRect(0,0,W,H);
 
-  const PAD = 14;
   const sel = selected;
 
-  // Helper: draw ellipse fill + stroke
-  function ell(cx,cy,rx,ry,fill,stroke,lineW,dash){
+  // ── Helper: filled + stroked ellipse ──
+  function ellipse(cxF,cyF,rxF,ryF, fillCol, strokeCol, lineW){
     ctx.beginPath();
-    ctx.ellipse(W*cx, H*cy, W*rx, H*ry, 0, 0, Math.PI*2);
-    if(fill)  { ctx.fillStyle=fill;  ctx.fill(); }
-    if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=lineW||1.5; ctx.setLineDash(dash||[]); ctx.stroke(); ctx.setLineDash([]); }
-  }
-  function ellPath(cx,cy,rx,ry){
-    ctx.beginPath();
-    ctx.ellipse(W*cx, H*cy, W*rx, H*ry, 0, 0, Math.PI*2);
+    ctx.ellipse(W*cxF, H*cyF, W*rxF, H*ryF, 0, 0, Math.PI*2);
+    if(fillCol)  { ctx.fillStyle=fillCol;   ctx.fill(); }
+    if(strokeCol){ ctx.strokeStyle=strokeCol; ctx.lineWidth=lineW||1.8; ctx.stroke(); }
   }
 
-  const alpha = id => sel===id ? '30' : '14';
-  const strokeW = id => sel===id ? 2.5 : 1.5;
+  // ── Helper: label ──
+  function label(cxF,cyF,text,col,bold,size){
+    ctx.font=(bold?'bold ':'')+`${size||11}px DM Sans,sans-serif`;
+    ctx.fillStyle=col; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(text, W*cxF, H*cyF);
+  }
 
-  // ── 1. Quadrilateral (outer rounded rect) ──
+  // Highlight alpha
+  const a = id => sel===id ? '28' : '0f';
+  const sw = id => sel===id ? 2.8 : 1.8;
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 1: Quadrilateral — full outer rect
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const PAD=12;
   ctx.beginPath();
-  ctx.roundRect(PAD, PAD, W-PAD*2, H-PAD*2, 12);
-  ctx.fillStyle = SHAPES.quad.color + (sel==='quad'?'22':'0e');
+  ctx.roundRect(PAD, PAD, W-PAD*2, H-PAD*2, 10);
+  ctx.fillStyle = SHAPES.quad.color + (sel==='quad'?'20':'0c');
   ctx.fill();
-  ctx.strokeStyle = SHAPES.quad.color + (sel==='quad'?'ff':'88');
-  ctx.lineWidth = sel==='quad'?2.5:1.5;
+  ctx.strokeStyle = SHAPES.quad.color + (sel==='quad'?'cc':'66');
+  ctx.lineWidth   = sw('quad');
   ctx.stroke();
-  // Label
-  ctx.font = `${sel==='quad'?'bold ':''}12px DM Sans,sans-serif`;
-  ctx.fillStyle = SHAPES.quad.color;
-  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-  ctx.fillText('Quadrilateral', PAD+10, PAD+8);
+  ctx.font=(sel==='quad'?'bold ':'')+`11px DM Sans,sans-serif`;
+  ctx.fillStyle=SHAPES.quad.color+(sel==='quad'?'':'99');
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillText('Quadrilateral', PAD+8, PAD+7);
 
-  // ── 2. Trapezium (top-left ellipse) ──
-  ell(.20,.28,.155,.17, SHAPES.trap.color+alpha('trap'), SHAPES.trap.color, strokeW('trap'));
-  ctx.font=`${sel==='trap'?'bold ':''}11px DM Sans`;
-  ctx.fillStyle=SHAPES.trap.color; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('Trapezium', W*.20, H*.20);
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 2a: Trapezium — top-left ellipse, fully inside quad, separate from para
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ellipse(.180,.30,.140,.165,
+    SHAPES.trap.color+a('trap'),
+    SHAPES.trap.color, sw('trap'));
+  label(.180,.22,'Trapezium',SHAPES.trap.color, sel==='trap', sel==='trap'?12:11);
 
-  // ── 3. Kite (bottom-left ellipse) ──
-  ell(.20,.72,.155,.17, SHAPES.kite.color+alpha('kite'), SHAPES.kite.color, strokeW('kite'));
-  ctx.font=`${sel==='kite'?'bold ':''}11px DM Sans`;
-  ctx.fillStyle=SHAPES.kite.color; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('Kite', W*.20, H*.66);
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 2b: Kite — bottom-left ellipse, fully inside quad, separate from para
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ellipse(.180,.71,.140,.165,
+    SHAPES.kite.color+a('kite'),
+    SHAPES.kite.color, sw('kite'));
+  label(.180,.71,'Kite',SHAPES.kite.color, sel==='kite', sel==='kite'?12:11);
 
-  // ── 4. Parallelogram (right big ellipse) ──
-  ell(.63,.50,.285,.39, SHAPES.para.color+alpha('para'), SHAPES.para.color, strokeW('para'));
-  ctx.font=`${sel==='para'?'bold ':''}12px DM Sans`;
-  ctx.fillStyle=SHAPES.para.color; ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.fillText('Parallelogram', W*.63, H*.12);
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 3: Parallelogram — right large ellipse, fully inside quad
+  //          Trapezium/Kite must NOT overlap it
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ellipse(.635,.50,.310,.41,
+    SHAPES.para.color+a('para'),
+    SHAPES.para.color, sw('para'));
+  label(.635,.10,'Parallelogram',SHAPES.para.color, sel==='para', sel==='para'?13:12);
 
-  // ── 5. Rectangle (left sub-ellipse inside para) ──
-  ell(.52,.46,.165,.26, SHAPES.rect.color+alpha('rect'), SHAPES.rect.color, strokeW('rect'));
-  ctx.font=`${sel==='rect'?'bold ':''}10px DM Sans`;
-  ctx.fillStyle=SHAPES.rect.color; ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.fillText('Rectangle', W*.52, H*.20);
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 4a: Rectangle — left sub-ellipse, fully inside Parallelogram
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ellipse(.540,.50,.170,.27,
+    SHAPES.rect.color+a('rect'),
+    SHAPES.rect.color, sw('rect'));
+  label(.540,.19,'Rectangle',SHAPES.rect.color, sel==='rect', sel==='rect'?11:10);
 
-  // ── 6. Rhombus (right sub-ellipse inside para) ──
-  ell(.745,.46,.165,.26, SHAPES.rhom.color+alpha('rhom'), SHAPES.rhom.color, strokeW('rhom'));
-  ctx.font=`${sel==='rhom'?'bold ':''}10px DM Sans`;
-  ctx.fillStyle=SHAPES.rhom.color; ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.fillText('Rhombus', W*.745, H*.20);
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 4b: Rhombus — right sub-ellipse, fully inside Parallelogram
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ellipse(.730,.50,.170,.27,
+    SHAPES.rhom.color+a('rhom'),
+    SHAPES.rhom.color, sw('rhom'));
+  label(.730,.19,'Rhombus',SHAPES.rhom.color, sel==='rhom', sel==='rhom'?11:10);
 
-  // ── 7. Square (intersection of rect+rhom) ──
-  ell(.632,.50,.10,.18, SHAPES.sq.color+alpha('sq'), SHAPES.sq.color, strokeW('sq'));
-  ctx.font=`${sel==='sq'?'bold ':''}9.5px DM Sans`;
-  ctx.fillStyle=SHAPES.sq.color; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('Square', W*.632, H*.50);
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LAYER 5: Square — intersection of Rectangle ∩ Rhombus
+  //          cx = midpoint of rect-cx and rhom-cx = (.535+.740)/2 ≈ .6375
+  //          rx must be small enough to fit inside both rect and rhom
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ellipse(.635,.50,.068,.17,
+    SHAPES.sq.color+a('sq'),
+    SHAPES.sq.color, sw('sq'));
+  label(.635,.50,'Square',SHAPES.sq.color, sel==='sq', sel==='sq'?11:10);
 
-  // ── Selection highlight ring ──
-  const rings = {
-    quad: ()=>{ ctx.beginPath(); ctx.roundRect(PAD-2,PAD-2,W-PAD*2+4,H-PAD*2+4,14); },
-    trap: ()=>ell(.20,.28,.162,.177,null,null),
-    kite: ()=>ell(.20,.72,.162,.177,null,null),
-    para: ()=>ell(.63,.50,.293,.397,null,null),
-    rect: ()=>ell(.52,.46,.173,.267,null,null),
-    rhom: ()=>ell(.745,.46,.173,.267,null,null),
-    sq:   ()=>ell(.632,.50,.108,.187,null,null),
+  // ── Selection glow ring ──
+  const glowMap = {
+    quad: ()=>{ ctx.beginPath(); ctx.roundRect(PAD-2,PAD-2,W-PAD*2+4,H-PAD*2+4,12); },
+    trap: ()=>{ ctx.beginPath(); ctx.ellipse(W*.180,H*.30,W*.148,H*.172,0,0,Math.PI*2); },
+    kite: ()=>{ ctx.beginPath(); ctx.ellipse(W*.180,H*.71,W*.148,H*.172,0,0,Math.PI*2); },
+    para: ()=>{ ctx.beginPath(); ctx.ellipse(W*.635,H*.50,W*.318,H*.418,0,0,Math.PI*2); },
+    rect: ()=>{ ctx.beginPath(); ctx.ellipse(W*.540,H*.50,W*.178,H*.278,0,0,Math.PI*2); },
+    rhom: ()=>{ ctx.beginPath(); ctx.ellipse(W*.730,H*.50,W*.178,H*.278,0,0,Math.PI*2); },
+    sq:   ()=>{ ctx.beginPath(); ctx.ellipse(W*.635,H*.50,W*.076,H*.178,0,0,Math.PI*2); },
   };
-  if(sel && rings[sel]){
-    rings[sel]();
+  if(sel && glowMap[sel]){
+    glowMap[sel]();
     ctx.strokeStyle = SHAPES[sel].color;
-    ctx.lineWidth   = 3;
+    ctx.lineWidth   = 3.5;
     ctx.setLineDash([]);
     ctx.stroke();
   }
 
-  // ── Build hit areas ──
   buildHitAreas();
 }
 
@@ -355,13 +374,13 @@ function inEllipse(mx,my,cxF,cyF,rxF,ryF){
 let hitAreas = [];
 function buildHitAreas(){
   hitAreas = [
-    { id:'sq',   test:(x,y)=>inEllipse(x,y,.632,.50,.10,.18) },
-    { id:'rect', test:(x,y)=>inEllipse(x,y,.52,.46,.165,.26) },
-    { id:'rhom', test:(x,y)=>inEllipse(x,y,.745,.46,.165,.26) },
-    { id:'para', test:(x,y)=>inEllipse(x,y,.63,.50,.285,.39) },
-    { id:'trap', test:(x,y)=>inEllipse(x,y,.20,.28,.155,.17) },
-    { id:'kite', test:(x,y)=>inEllipse(x,y,.20,.72,.155,.17) },
-    { id:'quad', test:()=>true },  // fallback
+    { id:'sq',   test:(x,y)=>inEllipse(x,y,.635,.50,.068,.17) },
+    { id:'rect', test:(x,y)=>inEllipse(x,y,.540,.50,.170,.27) },
+    { id:'rhom', test:(x,y)=>inEllipse(x,y,.730,.50,.170,.27) },
+    { id:'para', test:(x,y)=>inEllipse(x,y,.635,.50,.310,.41) },
+    { id:'trap', test:(x,y)=>inEllipse(x,y,.180,.30,.140,.165) },
+    { id:'kite', test:(x,y)=>inEllipse(x,y,.180,.71,.140,.165) },
+    { id:'quad', test:()=>true },
   ];
 }
 
