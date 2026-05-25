@@ -5,436 +5,348 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Quadrilateral Family — Ganita Prakash Grade 8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --paper:#faf8f4; --paper2:#f3f0ea; --paper3:#e8e3d8;
-  --ink:#1c1a16;   --ink2:#4a4640;   --ink3:#8a8580;
-  --rule:#d4cfc5;
-  --teal:#1d6a72;  --teal-bg:#e8f4f5;
-  --rust:#b84a2a;  --rust-bg:#fdf0ec;
-  --gold:#c08030;  --gold-bg:#fdf5e8;
-  --sage:#3a6a48;  --sage-bg:#eaf2ec;
-  --violet:#6a4a90;--violet-bg:#f2eef8;
-  --blue:#2a5a8a;  --blue-bg:#e8f0f8;
-  --font:'DM Sans',sans-serif;
-  --serif:'Lora',Georgia,serif;
+  --white:#ffffff;
+  --off:#f8f8f8;
+  --light:#f0f0f0;
+  --mid:#e0e0dc;
+  --rule:#c8c8c4;
+  --rule2:#e8e8e4;
+  --steel:#6a7a8a;
+  --steel2:#4a5a6a;
+  --navy:#1a2a3a;
+  --cQ:#4a5a6a;
+  --cT:#1d6a72;
+  --cP:#c08030;
+  --cK:#6a4a90;
+  --cR:#2a5a8a;
+  --cRh:#b84a2a;
+  --cS:#2a6a3a;
+  --sans:'Syne',system-ui,sans-serif;
   --mono:'DM Mono',ui-monospace,monospace;
-  --shadow:0 2px 12px rgba(28,26,22,.08);
 }
-body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;padding:28px 20px 60px;line-height:1.6;background-image:radial-gradient(circle at 20% 30%,rgba(192,128,48,.04) 0,transparent 50%),radial-gradient(circle at 80% 70%,rgba(29,106,114,.04) 0,transparent 50%)}
-.app{max-width:900px;margin:0 auto}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  font-family:var(--sans);
+  background:var(--white);
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+  position:fixed;inset:0;
+}
 
-.header{margin-bottom:24px;padding-bottom:18px;border-bottom:1.5px solid var(--rule)}
-.chapter-badge{display:inline-flex;align-items:center;gap:8px;background:var(--paper2);border:1.5px solid var(--rule);border-radius:20px;padding:4px 14px 4px 10px;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
-.badge-num{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;font-family:var(--mono);display:flex;align-items:center;justify-content:center}
-h1{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-.3px;line-height:1.2;margin-bottom:5px}
-.header-sub{font-size:14px;color:var(--ink2);max-width:560px;line-height:1.55}
+/* ── HEADER ── */
+.top{
+  border-bottom:1px solid var(--mid);
+  background:var(--white);
+  display:flex;align-items:stretch;
+  flex-shrink:0;
+  height:46px;
+}
+.top-left{
+  padding:0 18px;border-right:1px solid var(--mid);
+  display:flex;align-items:center;gap:12px;min-width:200px;
+}
+.top-ch{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);font-family:var(--mono)}
+.top-title{font-size:17px;font-weight:800;color:var(--navy);letter-spacing:-.02em}
+.top-center{flex:1;padding:0 18px;display:flex;align-items:center}
+.top-hint{font-size:11px;color:var(--steel);font-family:var(--mono);font-style:italic}
+.top-right{
+  border-left:1px solid var(--mid);padding:0 16px;
+  display:flex;align-items:center;gap:8px;
+}
+.sel-name{font-size:14px;font-weight:700;transition:color .2s}
+.sel-parent{font-size:10px;color:var(--steel);font-family:var(--mono)}
 
-.card{background:var(--paper);border:1.5px solid var(--rule);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
-.concept{background:var(--gold-bg);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 16px;margin-bottom:20px;font-family:var(--serif);font-style:italic;font-size:14px;color:#4a3010;line-height:1.65}
-.concept strong{font-style:normal;font-weight:700;color:#3a2008}
+/* ── MAIN ── */
+.main{
+  flex:1;display:grid;
+  grid-template-columns:1fr 300px;
+  overflow:hidden;min-height:0;
+}
 
-/* Venn canvas */
-.venn-wrap{background:var(--paper2);border:1.5px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:14px;position:relative;cursor:pointer}
-#venn{display:block;width:100%}
-.venn-hint{position:absolute;bottom:8px;right:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);background:rgba(250,248,244,.88);padding:3px 10px;border-radius:20px;border:1px solid var(--rule);pointer-events:none}
+/* ── VENN CANVAS ── */
+.venn-wrap{
+  overflow:hidden;cursor:pointer;
+  background:var(--off);
+  border-right:1px solid var(--mid);
+}
+#venn{display:block;width:100%;height:100%}
 
-/* Detail panel */
-.detail-panel{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
-@media(max-width:540px){.detail-panel{grid-template-columns:1fr}}
+/* ── DETAIL PANEL ── */
+.detail{
+  display:flex;flex-direction:column;
+  overflow:hidden;background:var(--white);
+}
+.dp-header{
+  padding:14px 16px;
+  border-bottom:1px solid var(--mid);
+  flex-shrink:0;
+}
+.dp-shape-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.dp-svg-wrap{width:60px;height:60px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.dp-svg-wrap svg{width:56px;height:56px}
+.dp-name{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:2px;transition:color .2s}
+.dp-parent{font-size:10px;color:var(--steel);font-family:var(--mono);letter-spacing:.04em}
+.dp-def{
+  padding:9px 12px;
+  background:var(--off);border:1px solid var(--rule2);
+  font-size:11px;color:var(--steel2);font-family:var(--mono);line-height:1.65;
+}
 
-.shape-preview{width:90px;height:90px;background:#fff;border:1.5px solid var(--rule);border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.shape-preview svg{width:72px;height:72px}
+/* props */
+.dp-props{flex:1;overflow-y:auto;padding:10px 12px}
+.dp-props::-webkit-scrollbar{width:3px}
+.dp-props::-webkit-scrollbar-thumb{background:var(--rule)}
+.prop-row{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 10px;
+  border-bottom:1px solid var(--rule2);
+  font-size:11px;font-family:var(--mono);
+  transition:all .15s;
+}
+.prop-row:last-child{border-bottom:none}
+.prop-row.own{color:var(--navy)}
+.prop-row.inh{color:var(--steel)}
+.prop-badge{
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  padding:2px 6px;border-radius:2px;flex-shrink:0;font-weight:700;
+}
+.pb-own{background:var(--light);color:var(--navy);border:1px solid var(--rule)}
+.pb-inh{background:transparent;color:var(--rule);border:1px solid var(--rule2)}
 
-.detail-right{min-width:0}
-.dp-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);margin-bottom:2px}
-.dp-parent{font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:8px}
-.dp-def{font-size:13.5px;color:var(--ink2);line-height:1.6;padding:10px 13px;background:var(--paper2);border-radius:8px;border:1.5px solid var(--rule);margin-bottom:10px}
-
-.props-list{display:flex;flex-direction:column;gap:5px}
-.prop-row{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink2);line-height:1.4}
-.prop-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:5px;flex-shrink:0;margin-top:1px}
-.pb-own{background:var(--sage-bg);color:var(--sage);border:1px solid #8abcaa}
-.pb-inh{background:var(--paper3);color:var(--ink3);border:1px solid var(--rule)}
-
-/* Insight */
-.insight{background:var(--gold-bg);border:1px solid #e0c080;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 15px;font-size:13px;color:#6b4400;line-height:1.65;margin-top:4px}
-.insight strong{color:#4a2e00}
+/* insight strip at bottom */
+.insight-strip{
+  padding:10px 12px;
+  border-top:1px solid var(--mid);
+  font-size:10px;color:var(--steel);font-family:var(--mono);
+  line-height:1.65;flex-shrink:0;background:var(--off);
+}
+.insight-strip strong{color:var(--navy)}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="header">
-    <div class="chapter-badge"><div class="badge-num">4</div>Chapter 4 · Quadrilaterals</div>
-    <h1>Quadrilateral Family Tree</h1>
-    <p class="header-sub">Every quadrilateral belongs to a family. Children inherit all properties of their parents and gain new ones. Click any region to explore.</p>
+
+<div class="top">
+  <div class="top-left">
+    <div class="top-ch">Ch·04</div>
+    <div class="top-title">Family Tree</div>
   </div>
-
-  <div class="card">
-    <div class="concept">
-      <strong>Reading the diagram:</strong> regions nested inside other regions are special cases. A square sits inside both Rectangle and Rhombus — it has every property of both. Kite and Trapezium are separate branches that don't inherit from each other.
-    </div>
-
-    <div class="venn-wrap">
-      <canvas id="venn" height="380"></canvas>
-      <div class="venn-hint">Click any region</div>
-    </div>
-
-    <!-- Detail panel -->
-    <div class="detail-panel">
-      <div class="shape-preview">
-        <svg id="dp-svg" viewBox="0 0 72 72" fill="none"></svg>
-      </div>
-      <div class="detail-right">
-        <div class="dp-name" id="dp-name">Parallelogram</div>
-        <div class="dp-parent" id="dp-parent"></div>
-        <div class="dp-def" id="dp-def"></div>
-        <div class="props-list" id="dp-props"></div>
-      </div>
+  <div class="top-center">
+    <div class="top-hint">Click any region to explore properties and inheritance</div>
+  </div>
+  <div class="top-right">
+    <div>
+      <div class="sel-name" id="sel-name" style="color:var(--cP)">Parallelogram</div>
+      <div class="sel-parent" id="sel-parent">inherits from: Quadrilateral</div>
     </div>
   </div>
+</div>
 
-  <div class="insight">
-    <strong>The hierarchy:</strong> Quadrilateral → Parallelogram → Rectangle → Square, and separately Parallelogram → Rhombus → Square. The square inherits from both Rectangle and Rhombus. Kite and Trapezium are direct children of Quadrilateral with no further subtypes shown here.
+<div class="main">
+  <div class="venn-wrap" id="venn-wrap">
+    <canvas id="venn"></canvas>
+  </div>
+  <div class="detail">
+    <div class="dp-header">
+      <div class="dp-shape-row">
+        <div class="dp-svg-wrap"><svg id="dp-svg" viewBox="0 0 56 56" fill="none"></svg></div>
+        <div>
+          <div class="dp-name" id="dp-name">Parallelogram</div>
+          <div class="dp-parent" id="dp-parent">INHERITS FROM: QUADRILATERAL</div>
+        </div>
+      </div>
+      <div class="dp-def" id="dp-def">A quadrilateral where both pairs of opposite sides are parallel.</div>
+    </div>
+    <div class="dp-props" id="dp-props"></div>
+    <div class="insight-strip" id="insight-strip">
+      <strong>Hierarchy:</strong> Quad → Para → Rect → Square, and Para → Rhombus → Square. The Square inherits from both.
+    </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════════
-const SHAPES = {
-  quad: {
-    name: 'Quadrilateral',
-    parent: null,
-    color: '#6a6258',
-    def: 'Any closed figure with exactly four straight sides and four angles.',
-    props: [
-      {own: true,  text: 'Four sides and four vertices'},
-      {own: true,  text: 'Sum of interior angles = 360°'},
-    ],
-    svg: 'M 10,14 L 62,10 L 64,62 L 8,58 Z',
-  },
-  trap: {
-    name: 'Trapezium',
-    parent: 'Quadrilateral',
-    color: '#1d6a72',
-    def: 'A quadrilateral with at least one pair of parallel opposite sides.',
-    props: [
-      {own: true,  text: 'At least one pair of parallel sides'},
-      {own: true,  text: 'Co-interior angles on the same side sum to 180°'},
-      {own: false, text: 'Sum of angles = 360°'},
-    ],
-    svg: 'M 8,52 L 64,52 L 52,20 L 20,20 Z',
-  },
-  para: {
-    name: 'Parallelogram',
-    parent: 'Quadrilateral',
-    color: '#c08030',
-    def: 'A quadrilateral where both pairs of opposite sides are parallel.',
-    props: [
-      {own: true,  text: 'Both pairs of opposite sides are parallel'},
-      {own: true,  text: 'Opposite sides are equal in length'},
-      {own: true,  text: 'Opposite angles are equal'},
-      {own: true,  text: 'Adjacent angles are supplementary (add to 180°)'},
-      {own: true,  text: 'Diagonals bisect each other'},
-      {own: false, text: 'Sum of angles = 360°'},
-    ],
-    svg: 'M 14,52 L 58,52 L 62,20 L 18,20 Z',
-  },
-  kite: {
-    name: 'Kite',
-    parent: 'Quadrilateral',
-    color: '#6a4a90',
-    def: 'A quadrilateral with two distinct pairs of consecutive sides that are equal.',
-    props: [
-      {own: true,  text: 'Two pairs of adjacent sides equal: AB=AD, CB=CD'},
-      {own: true,  text: 'One diagonal bisects the other at 90°'},
-      {own: true,  text: 'One diagonal is a line of symmetry'},
-      {own: true,  text: 'One pair of opposite angles equal (B = D)'},
-      {own: false, text: 'Sum of angles = 360°'},
-    ],
-    svg: 'M 36,5 L 62,38 L 36,67 L 10,38 Z',
-  },
-  rect: {
-    name: 'Rectangle',
-    parent: 'Parallelogram',
-    color: '#2a5a8a',
-    def: 'A parallelogram where all four interior angles are right angles (90°).',
-    props: [
-      {own: true,  text: 'All four angles = 90°'},
-      {own: true,  text: 'Diagonals are equal in length'},
-      {own: false, text: 'Opposite sides equal and parallel'},
-      {own: false, text: 'Diagonals bisect each other'},
-      {own: false, text: 'Adjacent angles supplementary'},
-    ],
-    svg: 'M 6,20 L 66,20 L 66,52 L 6,52 Z',
-  },
-  rhom: {
-    name: 'Rhombus',
-    parent: 'Parallelogram',
-    color: '#b84a2a',
-    def: 'A parallelogram where all four sides are equal in length.',
-    props: [
-      {own: true,  text: 'All four sides equal'},
-      {own: true,  text: 'Diagonals bisect each other at 90°'},
-      {own: true,  text: 'Diagonals bisect the vertex angles'},
-      {own: false, text: 'Opposite sides parallel'},
-      {own: false, text: 'Opposite angles equal'},
-      {own: false, text: 'Adjacent angles supplementary'},
-    ],
-    svg: 'M 36,5 L 64,36 L 36,67 L 8,36 Z',
-  },
-  sq: {
-    name: 'Square',
-    parent: 'Rectangle + Rhombus',
-    color: '#3a6a48',
-    def: 'A quadrilateral where all four sides are equal AND all four angles are 90°. It is both a rectangle and a rhombus.',
-    props: [
-      {own: true,  text: 'All sides equal AND all angles = 90°'},
-      {own: true,  text: 'Diagonals equal, bisect at 90°, bisect vertex angles (45° each)'},
-      {own: false, text: 'All rectangle properties'},
-      {own: false, text: 'All rhombus properties'},
-    ],
-    svg: 'M 10,10 L 62,10 L 62,62 L 10,62 Z',
-  },
+const SHAPES={
+  quad:{name:'Quadrilateral',parent:null,color:'#4a5a6a',
+    def:'Any closed figure with exactly four straight sides and four angles.',
+    svg:'M 8,10 L 48,8 L 50,48 L 6,46 Z',
+    props:[{own:true,text:'Four sides and four vertices'},{own:true,text:'Sum of interior angles = 360°'}]},
+  trap:{name:'Trapezium',parent:'Quadrilateral',color:'#1d6a72',
+    def:'A quadrilateral with at least one pair of parallel opposite sides.',
+    svg:'M 6,40 L 50,40 L 40,16 L 16,16 Z',
+    props:[{own:true,text:'At least one pair of parallel sides'},{own:true,text:'Co-interior angles on same side = 180°'},{own:false,text:'Sum of angles = 360°'}]},
+  para:{name:'Parallelogram',parent:'Quadrilateral',color:'#c08030',
+    def:'A quadrilateral where both pairs of opposite sides are parallel.',
+    svg:'M 10,40 L 46,40 L 50,16 L 14,16 Z',
+    props:[{own:true,text:'Both pairs of opposite sides parallel'},{own:true,text:'Opposite sides equal in length'},{own:true,text:'Opposite angles equal'},{own:true,text:'Adjacent angles supplementary (sum 180°)'},{own:true,text:'Diagonals bisect each other'},{own:false,text:'Sum of angles = 360°'}]},
+  kite:{name:'Kite',parent:'Quadrilateral',color:'#6a4a90',
+    def:'Two distinct pairs of consecutive sides that are equal: AB=AD, CB=CD.',
+    svg:'M 28,4 L 48,30 L 28,52 L 8,30 Z',
+    props:[{own:true,text:'AB=AD and CB=CD (consecutive pairs equal)'},{own:true,text:'One diagonal bisects the other at 90°'},{own:true,text:'One diagonal is a line of symmetry'},{own:true,text:'One pair of opposite angles equal (∠B = ∠D)'},{own:false,text:'Sum of angles = 360°'}]},
+  rect:{name:'Rectangle',parent:'Parallelogram',color:'#2a5a8a',
+    def:'A parallelogram where all four interior angles are right angles (90°).',
+    svg:'M 4,16 L 52,16 L 52,40 L 4,40 Z',
+    props:[{own:true,text:'All four angles = 90°'},{own:true,text:'Diagonals are equal in length'},{own:false,text:'Opposite sides equal and parallel'},{own:false,text:'Diagonals bisect each other'},{own:false,text:'Adjacent angles supplementary'}]},
+  rhom:{name:'Rhombus',parent:'Parallelogram',color:'#b84a2a',
+    def:'A parallelogram where all four sides are equal in length.',
+    svg:'M 28,4 L 50,28 L 28,52 L 6,28 Z',
+    props:[{own:true,text:'All four sides equal'},{own:true,text:'Diagonals bisect each other at 90°'},{own:true,text:'Diagonals bisect the vertex angles'},{own:false,text:'Opposite sides parallel'},{own:false,text:'Opposite angles equal'}]},
+  sq:{name:'Square',parent:'Rectangle + Rhombus',color:'#2a6a3a',
+    def:'All four sides equal AND all four angles = 90°. A rectangle and a rhombus simultaneously.',
+    svg:'M 8,8 L 48,8 L 48,48 L 8,48 Z',
+    props:[{own:true,text:'All sides equal AND all angles = 90°'},{own:true,text:'Diagonals equal, bisect at 90°, bisect angles (45°)'},{own:false,text:'All Rectangle properties'},{own:false,text:'All Rhombus properties'}]},
 };
 
-// ══════════════════════════════════════════════
-// VENN REGIONS  (canvas coordinate fractions)
-// Each region: ellipse defined by cx,cy,rx,ry (fractions of W,H)
-// plus hit areas for click detection
-// ══════════════════════════════════════════════
+let sel='para';
+let hitAreas=[];
+const venn=document.getElementById('venn');
+const ctx=venn.getContext('2d');
+const PR=Math.min(window.devicePixelRatio||1,2);
+let W=0,H=0;
 
-// We'll draw using actual pixel positions computed at draw time.
-// Layout strategy:
-//   Big outer rect = Quadrilateral
-//   Left ellipse   = Trapezium  (top-left inside quad)
-//   Right ellipse  = Kite       (bottom-left inside quad, separate)
-//   Center ellipse = Parallelogram (right half of quad)
-//     Inside para: left=Rectangle, right=Rhombus
-//     Intersection of rect+rhom = Square
+function draw(){
+  const wrap=document.getElementById('venn-wrap');
+  W=wrap.clientWidth;H=wrap.clientHeight;
+  venn.width=W*PR;venn.height=H*PR;
+  venn.style.width=W+'px';venn.style.height=H+'px';
+  ctx.resetTransform();ctx.scale(PR,PR);
 
-let selected = 'para';
-let W = 0, H = 0;
-const PR = Math.min(window.devicePixelRatio||1, 2);
+  ctx.fillStyle='#f8f8f8';ctx.fillRect(0,0,W,H);
 
-// Region layout as fractions [cx, cy, rx, ry] of canvas W/H
-// (computed each draw to stay responsive)
-function getRegions(W, H){
-  const PAD = 12;
-  return {
-    quad: { type:'rect', x:PAD, y:PAD, w:W-PAD*2, h:H-PAD*2 },
-    trap: { type:'ellipse', cx:.22, cy:.28, rx:.16, ry:.18 },
-    kite: { type:'ellipse', cx:.22, cy:.72, rx:.16, ry:.16 },
-    para: { type:'ellipse', cx:.63, cy:.50, rx:.30, ry:.40 },
-    rect: { type:'ellipse', cx:.52, cy:.46, rx:.17, ry:.27 },
-    rhom: { type:'ellipse', cx:.73, cy:.46, rx:.17, ry:.27 },
-    sq:   { type:'ellipse', cx:.625, cy:.46, rx:.085, ry:.18 },
-  };
-}
+  // Subtle grid
+  ctx.strokeStyle='rgba(200,200,196,.4)';ctx.lineWidth=.5;
+  for(let x=40;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=40;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 
-function px(frac, dim){ return frac * dim; }
+  hitAreas=[];
 
-function drawVenn(){
-  const canvas = document.getElementById('venn');
-  W = canvas.parentElement.clientWidth;
-  H = 380;
-  canvas.style.width  = W+'px';
-  canvas.style.height = H+'px';
-  canvas.width  = W * PR;
-  canvas.height = H * PR;
-  const ctx = canvas.getContext('2d');
-  ctx.resetTransform();
-  ctx.scale(PR, PR);
-
-  ctx.fillStyle = '#f3f0ea';
-  ctx.fillRect(0,0,W,H);
-
-  const sel = selected;
-
-  // ── Helper: filled + stroked ellipse ──
-  function ellipse(cxF,cyF,rxF,ryF, fillCol, strokeCol, lineW){
-    ctx.beginPath();
-    ctx.ellipse(W*cxF, H*cyF, W*rxF, H*ryF, 0, 0, Math.PI*2);
-    if(fillCol)  { ctx.fillStyle=fillCol;   ctx.fill(); }
-    if(strokeCol){ ctx.strokeStyle=strokeCol; ctx.lineWidth=lineW||1.8; ctx.stroke(); }
+  function ell(cxF,cyF,rxF,ryF,id){
+    const ex=W*cxF,ey=H*cyF,erx=W*rxF,ery=H*ryF;
+    const isSel=sel===id;
+    const s=SHAPES[id];
+    ctx.beginPath();ctx.ellipse(ex,ey,erx,ery,0,0,Math.PI*2);
+    ctx.fillStyle=s.color+(isSel?'22':'0e');ctx.fill();
+    ctx.strokeStyle=s.color+(isSel?'dd':'66');
+    ctx.lineWidth=isSel?2.5:1;ctx.stroke();
+    hitAreas.push({id,test:(mx,my)=>{const dx=(mx-ex)/erx,dy=(my-ey)/ery;return dx*dx+dy*dy<=1;}});
+  }
+  function rect(x,y,w,h,id){
+    const isSel=sel===id,s=SHAPES[id];
+    ctx.beginPath();ctx.roundRect(x,y,w,h,4);
+    ctx.fillStyle=s.color+(isSel?'18':'09');ctx.fill();
+    ctx.strokeStyle=s.color+(isSel?'cc':'55');
+    ctx.lineWidth=isSel?2.5:1;ctx.stroke();
+    hitAreas.push({id,test:(mx,my)=>mx>=x&&mx<=x+w&&my>=y&&my<=y+h});
+  }
+  function lbl(cxF,cyF,text,id,bold,size){
+    const isSel=sel===id,s=SHAPES[id];
+    ctx.font=(bold||isSel?'bold ':'')+`${size||10}px DM Mono,monospace`;
+    ctx.fillStyle=s.color+(isSel?'':'99');
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(text,W*cxF,H*cyF);
   }
 
-  // ── Helper: label ──
-  function label(cxF,cyF,text,col,bold,size){
-    ctx.font=(bold?'bold ':'')+`${size||11}px DM Sans,sans-serif`;
-    ctx.fillStyle=col; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(text, W*cxF, H*cyF);
-  }
+  const PAD=14;
+  // Quad outer
+  rect(PAD,PAD,W-PAD*2,H-PAD*2,'quad');
+  ctx.font='10px DM Mono';ctx.fillStyle=SHAPES.quad.color+(sel==='quad'?'':'66');
+  ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('Quadrilateral',PAD+8,PAD+7);
 
-  // Highlight alpha
-  const a = id => sel===id ? '28' : '0f';
-  const sw = id => sel===id ? 2.8 : 1.8;
+  // Trap top-left
+  ell(.17,.28,.13,.17,'trap');
+  lbl(.17,.20,'Trapezium','trap',false,9);
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 1: Quadrilateral — full outer rect
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const PAD=12;
-  ctx.beginPath();
-  ctx.roundRect(PAD, PAD, W-PAD*2, H-PAD*2, 10);
-  ctx.fillStyle = SHAPES.quad.color + (sel==='quad'?'20':'0c');
-  ctx.fill();
-  ctx.strokeStyle = SHAPES.quad.color + (sel==='quad'?'cc':'66');
-  ctx.lineWidth   = sw('quad');
-  ctx.stroke();
-  ctx.font=(sel==='quad'?'bold ':'')+`11px DM Sans,sans-serif`;
-  ctx.fillStyle=SHAPES.quad.color+(sel==='quad'?'':'99');
-  ctx.textAlign='left'; ctx.textBaseline='top';
-  ctx.fillText('Quadrilateral', PAD+8, PAD+7);
+  // Kite bottom-left
+  ell(.17,.73,.13,.16,'kite');
+  lbl(.17,.73,'Kite','kite',false,9);
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 2a: Trapezium — top-left ellipse, fully inside quad, separate from para
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ellipse(.180,.30,.140,.165,
-    SHAPES.trap.color+a('trap'),
-    SHAPES.trap.color, sw('trap'));
-  label(.180,.22,'Trapezium',SHAPES.trap.color, sel==='trap', sel==='trap'?12:11);
+  // Para right large
+  ell(.635,.50,.305,.41,'para');
+  lbl(.635,.10,'Parallelogram','para',false,11);
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 2b: Kite — bottom-left ellipse, fully inside quad, separate from para
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ellipse(.180,.71,.140,.165,
-    SHAPES.kite.color+a('kite'),
-    SHAPES.kite.color, sw('kite'));
-  label(.180,.71,'Kite',SHAPES.kite.color, sel==='kite', sel==='kite'?12:11);
+  // Rect left inside para
+  ell(.52,.50,.165,.27,'rect');
+  lbl(.52,.19,'Rectangle','rect',false,9);
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 3: Parallelogram — right large ellipse, fully inside quad
-  //          Trapezium/Kite must NOT overlap it
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ellipse(.635,.50,.310,.41,
-    SHAPES.para.color+a('para'),
-    SHAPES.para.color, sw('para'));
-  label(.635,.10,'Parallelogram',SHAPES.para.color, sel==='para', sel==='para'?13:12);
+  // Rhom right inside para
+  ell(.75,.50,.165,.27,'rhom');
+  lbl(.75,.19,'Rhombus','rhom',false,9);
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 4a: Rectangle — left sub-ellipse, fully inside Parallelogram
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ellipse(.540,.50,.170,.27,
-    SHAPES.rect.color+a('rect'),
-    SHAPES.rect.color, sw('rect'));
-  label(.540,.19,'Rectangle',SHAPES.rect.color, sel==='rect', sel==='rect'?11:10);
+  // Square intersection
+  ell(.635,.50,.07,.18,'sq');
+  lbl(.635,.50,'Square','sq',false,9);
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 4b: Rhombus — right sub-ellipse, fully inside Parallelogram
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ellipse(.730,.50,.170,.27,
-    SHAPES.rhom.color+a('rhom'),
-    SHAPES.rhom.color, sw('rhom'));
-  label(.730,.19,'Rhombus',SHAPES.rhom.color, sel==='rhom', sel==='rhom'?11:10);
-
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // LAYER 5: Square — intersection of Rectangle ∩ Rhombus
-  //          cx = midpoint of rect-cx and rhom-cx = (.535+.740)/2 ≈ .6375
-  //          rx must be small enough to fit inside both rect and rhom
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ellipse(.635,.50,.068,.17,
-    SHAPES.sq.color+a('sq'),
-    SHAPES.sq.color, sw('sq'));
-  label(.635,.50,'Square',SHAPES.sq.color, sel==='sq', sel==='sq'?11:10);
-
-  // ── Selection glow ring ──
-  const glowMap = {
-    quad: ()=>{ ctx.beginPath(); ctx.roundRect(PAD-2,PAD-2,W-PAD*2+4,H-PAD*2+4,12); },
-    trap: ()=>{ ctx.beginPath(); ctx.ellipse(W*.180,H*.30,W*.148,H*.172,0,0,Math.PI*2); },
-    kite: ()=>{ ctx.beginPath(); ctx.ellipse(W*.180,H*.71,W*.148,H*.172,0,0,Math.PI*2); },
-    para: ()=>{ ctx.beginPath(); ctx.ellipse(W*.635,H*.50,W*.318,H*.418,0,0,Math.PI*2); },
-    rect: ()=>{ ctx.beginPath(); ctx.ellipse(W*.540,H*.50,W*.178,H*.278,0,0,Math.PI*2); },
-    rhom: ()=>{ ctx.beginPath(); ctx.ellipse(W*.730,H*.50,W*.178,H*.278,0,0,Math.PI*2); },
-    sq:   ()=>{ ctx.beginPath(); ctx.ellipse(W*.635,H*.50,W*.076,H*.178,0,0,Math.PI*2); },
-  };
-  if(sel && glowMap[sel]){
-    glowMap[sel]();
-    ctx.strokeStyle = SHAPES[sel].color;
-    ctx.lineWidth   = 3.5;
-    ctx.setLineDash([]);
-    ctx.stroke();
-  }
-
-  buildHitAreas();
-}
-
-// ══════════════════════════════════════════════
-// HIT DETECTION
-// ══════════════════════════════════════════════
-// Test in reverse order (most nested first)
-function inEllipse(mx,my,cxF,cyF,rxF,ryF){
-  const dx=(mx-W*cxF)/(W*rxF), dy=(my-H*cyF)/(H*ryF);
-  return dx*dx+dy*dy <= 1;
-}
-
-let hitAreas = [];
-function buildHitAreas(){
-  hitAreas = [
-    { id:'sq',   test:(x,y)=>inEllipse(x,y,.635,.50,.068,.17) },
-    { id:'rect', test:(x,y)=>inEllipse(x,y,.540,.50,.170,.27) },
-    { id:'rhom', test:(x,y)=>inEllipse(x,y,.730,.50,.170,.27) },
-    { id:'para', test:(x,y)=>inEllipse(x,y,.635,.50,.310,.41) },
-    { id:'trap', test:(x,y)=>inEllipse(x,y,.180,.30,.140,.165) },
-    { id:'kite', test:(x,y)=>inEllipse(x,y,.180,.71,.140,.165) },
-    { id:'quad', test:()=>true },
-  ];
-}
-
-document.getElementById('venn').addEventListener('click', e=>{
-  const rect = document.getElementById('venn').getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  for(const h of hitAreas){
-    if(h.test(mx,my)){
-      selected = h.id;
-      drawVenn();
-      updatePanel(h.id);
-      return;
+  // Selection glow ring
+  if(sel){
+    const glowFns={
+      quad:()=>{ctx.beginPath();ctx.roundRect(PAD-2,PAD-2,W-PAD*2+4,H-PAD*2+4,6);},
+      trap:()=>{ctx.beginPath();ctx.ellipse(W*.17,H*.28,W*.138,H*.178,0,0,Math.PI*2);},
+      kite:()=>{ctx.beginPath();ctx.ellipse(W*.17,H*.73,W*.138,H*.168,0,0,Math.PI*2);},
+      para:()=>{ctx.beginPath();ctx.ellipse(W*.635,H*.50,W*.313,H*.418,0,0,Math.PI*2);},
+      rect:()=>{ctx.beginPath();ctx.ellipse(W*.52,H*.50,W*.173,H*.278,0,0,Math.PI*2);},
+      rhom:()=>{ctx.beginPath();ctx.ellipse(W*.75,H*.50,W*.173,H*.278,0,0,Math.PI*2);},
+      sq:  ()=>{ctx.beginPath();ctx.ellipse(W*.635,H*.50,W*.078,H*.188,0,0,Math.PI*2);},
+    };
+    if(glowFns[sel]){
+      glowFns[sel]();
+      ctx.strokeStyle=SHAPES[sel].color;ctx.lineWidth=3;ctx.stroke();
     }
+  }
+}
+
+venn.addEventListener('click',e=>{
+  const r=venn.getBoundingClientRect();
+  const mx=e.clientX-r.left,my=e.clientY-r.top;
+  // test most nested first
+  const order=['sq','rect','rhom','para','trap','kite','quad'];
+  for(const id of order){
+    const ha=hitAreas.find(h=>h.id===id);
+    if(ha&&ha.test(mx,my)){sel=id;draw();updatePanel(id);return;}
   }
 });
 
-// ══════════════════════════════════════════════
-// DETAIL PANEL
-// ══════════════════════════════════════════════
 function updatePanel(id){
-  const s = SHAPES[id];
-  const col = s.color;
+  const s=SHAPES[id];
+  document.getElementById('sel-name').textContent=s.name;
+  document.getElementById('sel-name').style.color=s.color;
+  document.getElementById('sel-parent').textContent=s.parent?'INHERITS FROM: '+s.parent.toUpperCase():'ROOT OF ALL QUADRILATERALS';
+  document.getElementById('dp-name').textContent=s.name;
+  document.getElementById('dp-name').style.color=s.color;
+  document.getElementById('dp-parent').textContent=s.parent?'INHERITS FROM: '+s.parent.toUpperCase():'ROOT';
+  document.getElementById('dp-def').textContent=s.def;
 
-  document.getElementById('dp-name').textContent = s.name;
-  document.getElementById('dp-name').style.color = col;
-  document.getElementById('dp-parent').textContent =
-    s.parent ? 'Inherits from: ' + s.parent : 'Root of all quadrilaterals';
-
-  document.getElementById('dp-def').textContent = s.def;
-
-  // Mini shape SVG
-  const svg = document.getElementById('dp-svg');
-  svg.innerHTML = `
-    <path d="${s.svg}" fill="${col}22" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>
-  `;
+  // SVG
+  const svg=document.getElementById('dp-svg');
+  svg.innerHTML=`<path d="${s.svg}" fill="${s.color}20" stroke="${s.color}" stroke-width="2" stroke-linejoin="round"/>`;
 
   // Props
-  const list = document.getElementById('dp-props');
-  list.innerHTML = '';
+  const propsDiv=document.getElementById('dp-props');propsDiv.innerHTML='';
   s.props.forEach(p=>{
-    const row = document.createElement('div');
-    row.className = 'prop-row';
-    row.innerHTML = `<span class="prop-badge ${p.own?'pb-own':'pb-inh'}">${p.own?'Own':'Parent'}</span>${p.text}`;
-    list.appendChild(row);
+    const row=document.createElement('div');
+    row.className='prop-row '+(p.own?'own':'inh');
+    row.innerHTML=`<span class="prop-badge ${p.own?'pb-own':'pb-inh'}">${p.own?'own':'parent'}</span>${p.text}`;
+    propsDiv.appendChild(row);
   });
+
+  // Insight
+  const insights={
+    quad:'Every shape on this map is a Quadrilateral. All inherit <strong>4 sides + 360° sum</strong>.',
+    trap:'Trapezium is a direct child of Quadrilateral. It does <strong>not</strong> inherit parallelogram properties.',
+    kite:'Kite is also a direct child of Quad — completely separate branch from Trapezium and Parallelogram.',
+    para:'Parallelogram is the ancestor of Rectangle, Rhombus, and Square. Its <strong>bisecting diagonals</strong> are key.',
+    rect:'Rectangle = Parallelogram + all 90° angles. Its diagonals are equal <strong>and</strong> bisect each other.',
+    rhom:'Rhombus = Parallelogram + all equal sides. Its diagonals bisect at <strong>90°</strong> and bisect vertex angles.',
+    sq:'Square = Rectangle ∩ Rhombus. It has <strong>every property</strong> of both — the most constrained quadrilateral.',
+  };
+  document.getElementById('insight-strip').innerHTML=insights[id]||'';
 }
 
-// ══════════════════════════════════════════════
-// RESIZE + INIT
-// ══════════════════════════════════════════════
-new ResizeObserver(drawVenn).observe(document.getElementById('venn').parentElement);
-drawVenn();
-updatePanel('para');
+new ResizeObserver(()=>{draw();}).observe(document.getElementById('venn-wrap'));
+draw();updatePanel('para');
 </script>
 </body>
 </html>
